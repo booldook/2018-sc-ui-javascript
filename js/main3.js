@@ -27,4 +27,17 @@ var fn = function() {
 var x = fn;
 x();
 */
-var interval = setInterval();
+
+//i++;	// i = i + 1;
+
+/*
+var i = 0;
+var fn = function() {
+	console.log("안녕"+i++);
+}
+
+//window.setInterval(fn, 1000);
+$("body").click(function() {
+	console.log("안녕"+i++);
+});
+*/
