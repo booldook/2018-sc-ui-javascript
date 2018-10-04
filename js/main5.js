@@ -1,3 +1,11 @@
+/*
+if(조건) {
+	조건이 참이면 실행...
+}
+else {
+	조건이 거짓이면 실행... (else{} 는 생략 가능)
+}
+*/
 var joinFn = function(){
 	var f = $("#join_form");
 	var username = $("input[name='username']", f).val();
