@@ -18,6 +18,7 @@ div, ul, li, ol, dl, dd, dt {margin: 0; padding: 0; box-sizing: border-box; list
 table {margin:0; padding:0; border-collapse:collapse;}
 th, td {margin:0; padding:0;}
 
+
 a {text-decoration:none; color: inherit;}
 /* 보통 hover 만 준다 */
 a:link {color:#666;}			/* 기본색 */
