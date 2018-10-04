@@ -1,2 +1,3 @@
 .wrap {width:100%; max-width:1200px; margin:50px auto;}
 .wrap > .w3-panel {padding:3rem;}
+#join_tb input[name='username'] {border:1px solid #00f !important;}
