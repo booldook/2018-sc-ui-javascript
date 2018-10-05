@@ -1,0 +1,4 @@
+.wrap {width:100%; max-width:1200px; margin:50px auto;}
+.wrap > li {width:20%; padding:2%; float:left;}
+.wrap > li > :first-child {box-shadow:0 3px 3px rgba(0,0,0,0.3);}
+.wrap > li > :last-child {padding:1em; text-align:center;}
