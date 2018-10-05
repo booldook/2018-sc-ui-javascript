@@ -1,0 +1,4 @@
+html, body {text-align:center;}
+.banners {width:1200px; margin:50px auto;}
+.banners ul {width:100%; position: relative;}
+.banners li:not(:last-child) {position:absolute; top:0; left:0;}

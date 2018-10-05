@@ -1,0 +1,5 @@
+.wrap {width:100%; max-width:1200px; margin:50px auto; text-align:center;}
+.box {width:150px; height:150px; position:absolute; background-color:olivedrab; 
+	border:10px solid peru;}
+#box1 {top:200px; left:100px;}
+#box2 {top:400px; left:100px;}
