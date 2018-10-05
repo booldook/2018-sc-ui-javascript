@@ -4,14 +4,13 @@
 2. - (하이픈)을 사용하지 않는다.
 3. 예약어(예:click, hover)를 사용하지 않는다.
 4. Camel 표기법을 가급적이면 따른다. (예: cateList, cateListArray). 
-*/
-/*
+
 var n = 30;
 function test() {
 	return "n은" + n + " 입니다.";
 }
-console.log(test);
-console.log(test());
+console.log(test);		//함수 자체를 프린트
+console.log(test());	//함수를 실행하고 결과를 프린트
 
 var n = 30;
 var test = function() {
@@ -19,25 +18,24 @@ var test = function() {
 }
 console.log(test);
 console.log(test());
-*/
-/*
+
+
 var fn = function() {
 	console.log("함수");
 }
 var x = fn;
-x();
-*/
+console.log(	x		);
+console.log(	x()	);
+
 
 //i++;	// i = i + 1;
+*/
 
-/*
 var i = 0;
 var fn = function() {
 	console.log("안녕"+i++);
 }
-
 //window.setInterval(fn, 1000);
 $("body").click(function() {
 	console.log("안녕"+i++);
 });
-*/

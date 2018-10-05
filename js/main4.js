@@ -1,6 +1,7 @@
 //function oddChk(n) {}
+var n;
 var oddChk = function() {
-	var n = prompt("원하는 숫자를 입력하세요.");
+	n = prompt("원하는 숫자를 입력하세요.");
 	if(n%2 == 0) {
 		console.log("짝수입니다.");
 	} 

@@ -1,0 +1,7 @@
+.wrap {width:100%; height:100%;}
+.pages {width:100%; height:100%;}
+#page1 {background-color:antiquewhite;}
+#page2 {background-color:aquamarine; max-height:500px;}
+#page3 {background-color:orange;}
+#page4 {background-color: olive; max-height:500px;}
+#page5 {background-color: palevioletred;}

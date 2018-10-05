@@ -14,9 +14,10 @@ for(var i=1; i<=1000; i++) {
 /***** 구구단 만들기 *****/
 $("table").addClass("w3-table w3-centered w3-border w3-bordered");	//addClass->클래스를 주기
 $("table").css({"max-width":"1200px", "margin":"100px auto"});
-$("thead").append('<th class="w3-center">구분</th>');
+$("thead").append("<tr></tr>");
+$("thead tr").append('<th class="w3-center">구분</th>');
 for(i=2; i<=9; i++) {
-	$("thead").append('<th class="w3-center">'+i+'단</th>');
+	$("thead tr").append('<th class="w3-center">'+i+'단</th>');
 }
 var str;
 for(i=1; i<=9; i++) {
