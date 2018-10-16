@@ -73,6 +73,7 @@ var data = [
 ];
 //console.log(data[0][1].title);
 
+/*
 $("#bt").click(function(){
 	var html = '';
 	for(var i=0; i<data.length; i++) {
@@ -87,7 +88,7 @@ $("#bt").click(function(){
 		$("#wrap").append(html);
 	}
 });
-
+*/
 /*
 <li>
     <ul>
@@ -139,3 +140,28 @@ var data2 = {
 
 console.log(data2.li[0].ul[1].title);
 */
+
+$("#bt").click(function(){
+	$.ajax({
+		url:"../json/cate.json",
+		type:"get",
+		dataType:"json",
+		success: function(data){
+			console.log(data);
+			for(var i=0; i<data.result.length; i++){
+				var html  = '<li>';
+				for(var j=0; j<data.result[i].length; j++) {
+					html += '<ul>';
+					html += '<li><img src="'+data.result[i][j].img+'" class="img"></li>';
+					html += '<li>'+data.result[i][j].title+'</li>';
+					html += '</ul>';
+				}
+				html += '</li>';
+				$("#wrap").append(html);
+			}
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+});
