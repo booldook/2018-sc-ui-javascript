@@ -1,2 +1,4 @@
-#wrap {width:100%; max-width:1200px; margin:0 auto;}
-#wrap > li {width:33.33%; padding:2%; border:1px solid #ccc; float:left;}
+.wrap {width:100%; max-width:1000px; margin:0 auto;}
+.board {margin:3rem auto;}
+.pager {text-align:center;}
+.board th, .board td:not(:nth-child(2)) {text-align:center;}
