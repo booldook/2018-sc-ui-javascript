@@ -1,6 +1,14 @@
-/* (function pagerInit(){
+function pagerInit(){
 	var cnt = $(".ban").length;
 	var pager = [];
+	for(var i=0; i<cnt; i++) {
+		var name = $(".ban").eq(i).data("name");
+		var link = $(".ban").eq(i).data("link");
+		pager[i] = '<a href="'+link+'" class="w3-bar-item w3-button">'+name+'</a>';
+	}
+	for(var i=0; i<cnt; i++) {
+		$(".pager").append(pager[i]);
+	};
 	$(".ban").each(function(i){
 		var name = $(this).data("name");
 		var link = $(this).data("link");
@@ -9,7 +17,7 @@
 	pager.forEach(function(item){
 		$(".pager").append(item);
 	});
-})(); */
+};
 (function(){
 	$(".ban").each(function(){
 		$('.pager').append('<a href="'+$(this).data('link')+'" class="w3-bar-item w3-button" onclick="pageSel(this);">'+$(this).data('name')+'</a>');
