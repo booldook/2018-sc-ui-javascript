@@ -1,0 +1,12 @@
+.wrap {width:100%; max-width:1200px; margin:100px auto;}
+.grid-sizer {width:24%; margin:0.5%;}
+.grid-item {width:24%; margin:0.5%; border:1px solid #666; padding:10px;}
+
+@media screen and (max-width:768px) {
+	.grid-sizer {width:49%;}
+	.grid-item {width:49%;}
+}
+@media screen and (max-width:480px) {
+	.grid-sizer {width:99%;}
+	.grid-item {width:99%;}
+}

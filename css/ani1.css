@@ -1,0 +1,4 @@
+.wrap {width:100%;}
+.ban_wrap {width:100%; max-width:1920px; position:relative; margin:0 auto;}
+.ban {position:absolute; top:0; left:0;}
+.pager_wrap {margin-top:20px;}
