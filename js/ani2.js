@@ -3,7 +3,8 @@ var cnt = $(".ban").length;
 var stn = 0;
 var prev = cnt - 1;
 var next = stn + 1;
-var wid = $(".ban_wrap").width();
+var wid = $(".ban").width();
+var hei = $(".ban").height();
 slideInit();
 var interval = setInterval(slideAni, 3000);
 
@@ -31,7 +32,8 @@ function slideInit() {
 		next = stn + 1;
 	}
 	wid = $(".ban").width();
-	$(".ban_wrap").css({"left":-wid+"px"});
+	hei = $(".ban").height();
+	$(".ban_wrap").css({"left":-wid+"px", "height":hei+"px"});
 	$(".ban").css({"left":"0px", "z-index":1});
 	$(".ban").eq(stn).css({"left":wid+"px", "z-index":2});
 	$(".ban").eq(prev).css({"left":"0px", "z-index":2});
