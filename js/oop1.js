@@ -53,11 +53,12 @@ var Box = (function(){
 		this.obj.box = $(html).appendTo($(this.obj.parent));
 	};
 	Box.prototype.init = function(_target, _speed){
-		$(".bt_move", $(this.obj.bts)).on("click", function(){
-			$(this).parent().next().stop().animate({"left":_target+"px"}, _speed);
+		var tmp = this;
+		$(".bt_move", $(this.obj.bts)).click(tmp, function(){
+			tmp.obj.box.stop().animate({"left":_target+"px"}, _speed);
 		});
-		$(".bt_reset", $(this.obj.bts)).on("click", function(){
-			$(this).parent().next().stop().animate({"left":"0px"}, _speed);
+		$(".bt_reset", $(this.obj.bts)).click(tmp, function(){
+			tmp.obj.box.stop().animate({"left":"0px"}, _speed);
 		});
 	};
 	return Box;

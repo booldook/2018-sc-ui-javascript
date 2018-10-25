@@ -8,6 +8,7 @@ var hei = $(".ban").height();
 var delay = 3000;
 var speed = 500;
 
+
 /***** 최초 Init *****/
 slideInit();
 var interval = setInterval(slideAni, delay);
