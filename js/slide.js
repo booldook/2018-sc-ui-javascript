@@ -1,11 +1,11 @@
 var Slide = (function(){
 	function Slide(_wrap, _option) {
 		//객체의 전역변수 선언
+		var ori = this;
 		this.slides = _wrap;
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
 		this.now = 0;
-		this.wid = $(this.slide[0]).width();
 		//_option 존재여부에 따른 this.option 생성
 		if(_option) {
 			this.option = _option;
@@ -24,10 +24,18 @@ var Slide = (function(){
 			case "infinite" :
 				this.initInfinite();
 				break;
+			case "fade" :
+				this.initFade();
+				break;
 			default :
 				this.initNormal();
 				break;
 		}
+		$(window).resize(function(){
+			ori.wid = $(ori.slide[0]).width();
+			ori.hei = $(ori.slide[0]).height();
+			ori.slides.height(ori.hei);
+		}).trigger("resize");
 	};
 	//type:pingpong
 	Slide.prototype.initPingpong = function() {
@@ -66,7 +74,20 @@ var Slide = (function(){
 			ori.now++;
 			ori.slideInfinite();
 		});
-	}
+	};
+	//type:fade
+	Slide.prototype.initFade = function(){
+		this.depth = 2;
+		this.slideFade();
+	};
+	Slide.prototype.slideFade = function(){
+		var ori = this;
+		this.slide.eq(this.now).css({"z-index":this.depth++, "display":"none"}).delay(this.option.delay).fadeIn(this.option.speed, function(){
+			if(ori.now == ori.cnt - 1) ori.now = 0;
+			else ori.now++;
+			ori.slideFade();
+		});
+	};
 	//type:normal
 	Slide.prototype.initNormal = function() {
 		for(var i=0; i<this.cnt; i++) {
