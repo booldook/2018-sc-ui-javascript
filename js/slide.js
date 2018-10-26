@@ -1,7 +1,12 @@
 var Slide = (function(){
 	function Slide(_wrap, _option) {
+		//객체의 전역변수 선언
 		this.slides = _wrap;
 		this.slide = $(".slide", this.slides);
+		this.cnt = this.slide.length;
+		this.now = 0;
+		this.wid = $(this.slide[0]).width();
+		//_option 존재여부에 따른 this.option 생성
 		if(_option) {
 			this.option = _option;
 		}
@@ -12,12 +17,9 @@ var Slide = (function(){
 				speed: 300
 			}
 		}
-		this.cnt = this.slide.length;
-		this.now = 0;
-		this.wid = $(this.slide[0]).width();
 		switch(this.option.type) {
 			case "pingpong" :
-				this.direction = -1;
+				this.direction = 1;
 				this.initPingpong();
 				break;
 			case "infinite" :
@@ -39,23 +41,17 @@ var Slide = (function(){
 		var ori = this;
 		$(this.slides).delay(this.option.delay).animate({
 			"left":-(this.wid*this.now)+"px"}, this.option.speed, function(){
-				if(ori.direction == -1) {
-					if(ori.now == ori.cnt - 1) {
-						ori.direction = 1;
-						ori.now--;
-					}
-					else {
-						ori.now++;
-					}
+				if(ori.now == ori.cnt - 1) {
+					ori.direction = -1;
+					ori.now--;
+				}
+				else if(ori.now == 0) {
+					ori.direction = 1;
+					ori.now++;
 				}
 				else {
-					if(ori.now == 0) {
-						ori.direction = -1;
-						ori.now++;
-					}
-					else {
-						ori.now--;
-					}
+					//ori.now = ori.now + ori.direction;
+					ori.now += ori.direction;
 				}
 				ori.slidePingpong();
 		});
