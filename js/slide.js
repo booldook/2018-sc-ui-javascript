@@ -19,7 +19,6 @@ var Slide = (function(){
 		}
 		switch(this.option.type) {
 			case "pingpong" :
-				this.direction = 1;
 				this.initPingpong();
 				break;
 			case "infinite" :
@@ -41,25 +40,33 @@ var Slide = (function(){
 		var ori = this;
 		$(this.slides).delay(this.option.delay).animate({
 			"left":-(this.wid*this.now)+"px"}, this.option.speed, function(){
-				if(ori.now == ori.cnt - 1) {
-					ori.direction = -1;
-					ori.now--;
-				}
-				else if(ori.now == 0) {
-					ori.direction = 1;
-					ori.now++;
-				}
-				else {
-					//ori.now = ori.now + ori.direction;
-					ori.now += ori.direction;
-				}
+				if(ori.now == ori.cnt - 1) ori.direction = -1;
+				else if(ori.now == 0) ori.direction = 1;
+				ori.now += ori.direction;
 				ori.slidePingpong();
 		});
 	};
 	//type:infinite
 	Slide.prototype.initInfinite = function() {
-
+		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
+		this.slide = $(".slide", this.slides);
+		this.cnt = this.slide.length;
+		for(var i=0; i<this.cnt; i++) {
+			$(this.slide[i]).css({"left":(this.wid*i)+"px"});
+		}
+		this.slideInfinite();
 	};
+	Slide.prototype.slideInfinite = function(){
+		var ori = this;
+		this.slides.delay(this.option.delay).animate({"left":-(this.now*this.wid)+"px"}, this.option.speed, function(){
+			if(ori.now == ori.cnt - 1) {
+				ori.slides.css({"left":0});
+				ori.now = 0;
+			}
+			ori.now++;
+			ori.slideInfinite();
+		});
+	}
 	//type:normal
 	Slide.prototype.initNormal = function() {
 		for(var i=0; i<this.cnt; i++) {
