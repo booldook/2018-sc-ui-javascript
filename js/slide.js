@@ -1,7 +1,7 @@
 var Slide = (function(){
 	function Slide(_wrap, _option) {
 		//객체의 전역변수 선언
-		var ori = this;
+		var obj = this;
 		this.slides = _wrap;
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
@@ -32,9 +32,9 @@ var Slide = (function(){
 				break;
 		}
 		$(window).resize(function(){
-			ori.wid = $(ori.slide[0]).width();
-			ori.hei = $(ori.slide[0]).height();
-			ori.slides.height(ori.hei);
+			obj.wid = $(obj.slide[0]).width();
+			obj.hei = $(obj.slide[0]).height();
+			obj.slides.height(obj.hei);
 		}).trigger("resize");
 	};
 	//type:pingpong
@@ -45,13 +45,13 @@ var Slide = (function(){
 		this.slidePingpong();
 	};
 	Slide.prototype.slidePingpong = function(){
-		var ori = this;
+		var obj = this;
 		$(this.slides).delay(this.option.delay).animate({
 			"left":-(this.wid*this.now)+"px"}, this.option.speed, function(){
-				if(ori.now == ori.cnt - 1) ori.direction = -1;
-				else if(ori.now == 0) ori.direction = 1;
-				ori.now += ori.direction;
-				ori.slidePingpong();
+				if(obj.now == obj.cnt - 1) obj.direction = -1;
+				else if(obj.now == 0) obj.direction = 1;
+				obj.now += obj.direction;
+				obj.slidePingpong();
 		});
 	};
 	//type:infinite
@@ -65,14 +65,14 @@ var Slide = (function(){
 		this.slideInfinite();
 	};
 	Slide.prototype.slideInfinite = function(){
-		var ori = this;
+		var obj = this;
 		this.slides.delay(this.option.delay).animate({"left":-(this.now*this.wid)+"px"}, this.option.speed, function(){
-			if(ori.now == ori.cnt - 1) {
-				ori.slides.css({"left":0});
-				ori.now = 0;
+			if(obj.now == obj.cnt - 1) {
+				obj.slides.css({"left":0});
+				obj.now = 0;
 			}
-			ori.now++;
-			ori.slideInfinite();
+			obj.now++;
+			obj.slideInfinite();
 		});
 	};
 	//type:fade
@@ -81,11 +81,11 @@ var Slide = (function(){
 		this.slideFade();
 	};
 	Slide.prototype.slideFade = function(){
-		var ori = this;
+		var obj = this;
 		this.slide.eq(this.now).css({"z-index":this.depth++, "display":"none"}).delay(this.option.delay).fadeIn(this.option.speed, function(){
-			if(ori.now == ori.cnt - 1) ori.now = 0;
-			else ori.now++;
-			ori.slideFade();
+			if(obj.now == obj.cnt - 1) obj.now = 0;
+			else obj.now++;
+			obj.slideFade();
 		});
 	};
 	//type:normal
@@ -96,11 +96,11 @@ var Slide = (function(){
 		this.slideNormal();
 	};
 	Slide.prototype.slideNormal = function(){
-		var ori = this;
+		var obj = this;
 		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*this.wid)+"px"}, this.option.speed, function(){
-			if(ori.now == ori.cnt - 1) ori.now = 0;
-			else ori.now++;
-			ori.slideNormal();
+			if(obj.now == obj.cnt - 1) obj.now = 0;
+			else obj.now++;
+			obj.slideNormal();
 		});
 	};
 	return Slide;
