@@ -1,50 +1,99 @@
 var Slide = (function(){
-	function Slide(_option) {
-		if(!_option) {
-			this.option = {
-				speed: 1000,
-				delay: 3000
-			}
-		}
-		else {
+	function Slide(_wrap, _option) {
+		this.slides = _wrap;
+		this.slide = $(".slide", this.slides);
+		if(_option) {
 			this.option = _option;
 		}
-		this.option = _option;
-		this.slides = $(".slides");
-		this.slide = $(".slide", this.slides);
-		this.init();
-	};
-	Slide.prototype.init = function(){
+		else {
+			this.option = {
+				type: "normal",
+				delay: 2000,
+				speed: 300
+			}
+		}
 		this.cnt = this.slide.length;
-		this.stn = 0;
-		var ori = this;
-		$(window).resize(ori, function(){
-			ori.wid = ori.slide.width();
-			ori.hei = ori.slide.height();
-			ori.posInit();
-		}).trigger("resize");
-	}
-	Slide.prototype.posInit = function(){
-		console.log(this.wid, this.hei);
-		this.now = this.slide.eq(this.stn);
-		switch(this.stn) {
-			case this.cnt - 1 :
-				this.prev = this.slide.eq(this.stn-1);
-				this.next = this.slide.eq(0);
+		this.now = 0;
+		this.wid = $(this.slide[0]).width();
+		switch(this.option.type) {
+			case "pingpong" :
+				this.direction = -1;
+				this.initPingpong();
 				break;
-			case 0 :
-				this.prev = this.slide.eq(this.cnt);
-				this.next = this.slide.eq(this.stn+1);
+			case "infinite" :
+				this.initInfinite();
 				break;
 			default :
-				this.prev = this.slide.eq(this.stn-1);
-				this.next = this.slide.eq(this.stn+1);
+				this.initNormal();
+				break;
 		}
-		this.slide.css({"z-index":1});
-		this.slides.css({"left":-this.wid+"px"});
-		this.now.css({"z-index":2, "left":this.wid+"px"});
-		this.prev.css({"z-index":2, "left":"0px"});
-		this.next.css({"z-index":2, "left":this.wid*2+"px"});
-	}
+	};
+	//type:pingpong
+	Slide.prototype.initPingpong = function() {
+		for(var i=0; i<this.cnt; i++) {
+			$(this.slide[i]).css({"left":(this.wid*i)+"px"});
+		}
+		this.slidePingpong();
+	};
+	Slide.prototype.slidePingpong = function(){
+		var ori = this;
+		$(this.slides).delay(this.option.delay).animate({
+			"left":-(this.wid*this.now)+"px"}, this.option.speed, function(){
+				if(ori.direction == -1) {
+					if(ori.now == ori.cnt - 1) {
+						ori.direction = 1;
+						ori.now--;
+					}
+					else {
+						ori.now++;
+					}
+				}
+				else {
+					if(ori.now == 0) {
+						ori.direction = -1;
+						ori.now++;
+					}
+					else {
+						ori.now--;
+					}
+				}
+				ori.slidePingpong();
+		});
+	};
+	//type:infinite
+	Slide.prototype.initInfinite = function() {
+
+	};
+	//type:normal
+	Slide.prototype.initNormal = function() {
+		for(var i=0; i<this.cnt; i++) {
+			$(this.slide[i]).css({"left":(this.wid*i)+"px"});
+		}
+		this.slideNormal();
+	};
+	Slide.prototype.slideNormal = function(){
+		var ori = this;
+		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*this.wid)+"px"}, this.option.speed, function(){
+			if(ori.now == ori.cnt - 1) ori.now = 0;
+			else ori.now++;
+			ori.slideNormal();
+		});
+	};
 	return Slide;
 }());
+
+
+/***** 참고사항 *****/
+/*
+switch(값) {
+	case "infinite" :
+		//실행문
+		break;
+	case "pingpong" :
+		//실행문
+		break;
+	default :
+		//실행문
+		break;
+}
+*/
