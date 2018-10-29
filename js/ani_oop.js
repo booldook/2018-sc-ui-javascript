@@ -1,14 +1,17 @@
 //type normal/pingpong/infinite
 var banner = new Slide($("#slides1"), {
 	type: "normal",
-	delay: 1000,
-	speed: 500
+	hover: false
 });
 
 var banner = new Slide($("#slides2"), {
 	type: "infinite",
 	delay: 1200,
-	speed: 600
+	speed: 600,
+	hover: true,
+	pager: true,
+	pagerPos: "bottom",
+	pagerVal: "50px"
 });
 
 var banner = new Slide($("#slides3"), {

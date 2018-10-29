@@ -7,40 +7,49 @@ var Slide = (function(){
 		this.cnt = this.slide.length;
 		this.hoverChk = true;
 		//_option 존재여부에 따른 this.option 생성
-		if(_option) this.option = _option;
+		if(_option) {
+			this.option = _option;
+			if(this.nullChk(this.option.type)) this.option.type = "normal";
+			if(this.nullChk(this.option.delay)) this.option.delay = 2000;
+			if(this.nullChk(this.option.speed)) this.option.speed = 300;
+			if(this.nullChk(this.option.hover)) this.option.hover = true;
+		}
 		else {
 			this.option = {
 				type: "normal",
 				delay: 2000,
-				speed: 300
+				speed: 300,
+				hover: true
 			}
 		}
 		$(window).resize(function(){
 			obj.hei = $(obj.slide[0]).height();
 			obj.slides.height(obj.hei);
 		}).trigger("resize");
-		$(this.slides).hover(function(){
-			obj.hoverChk = false;
-		}, function(){
-			obj.hoverChk = true;
-			switch(obj.option.type) {
-				case "pingpong" :
-					obj.slidePingpong();
-					break;
-				case "infinite" :
-					obj.slideInfinite();
-					break;
-				case "fade" :
-					obj.slideFade();
-					break;
-				case "vertical" :
-					obj.slideVertical();
-					break;
-				default :
-					obj.slideNormal();
-					break;
-			}
-		});
+		if(this.option.hover) {
+			$(this.slides).hover(function(){
+				obj.hoverChk = false;
+			}, function(){
+				obj.hoverChk = true;
+				switch(obj.option.type) {
+					case "pingpong" :
+						obj.slidePingpong();
+						break;
+					case "infinite" :
+						obj.slideInfinite();
+						break;
+					case "fade" :
+						obj.slideFade();
+						break;
+					case "vertical" :
+						obj.slideVertical();
+						break;
+					default :
+						obj.slideNormal();
+						break;
+				}
+			});
+		}
 		switch(this.option.type) {
 			case "pingpong" :
 				this.now = 1;
@@ -79,7 +88,7 @@ var Slide = (function(){
 				if(obj.now == obj.cnt - 1) obj.direction = -1;
 				else if(obj.now == 0) obj.direction = 1;
 				obj.now += obj.direction;
-				if(this.hoverChk) obj.slidePingpong();
+				if(obj.hoverChk) obj.slidePingpong();
 		});
 	};
 	//type:infinite
@@ -100,7 +109,7 @@ var Slide = (function(){
 				obj.now = 0;
 			}
 			obj.now++;
-			if(this.hoverChk) obj.slideInfinite();
+			if(obj.hoverChk) obj.slideInfinite();
 		});
 	};
 	//type:fade
@@ -113,7 +122,7 @@ var Slide = (function(){
 		this.slide.eq(this.now).css({"z-index":this.depth++, "display":"none"}).delay(this.option.delay).fadeIn(this.option.speed, function(){
 			if(obj.now == obj.cnt - 1) obj.now = -1;
 			obj.now++;
-			if(this.hoverChk) obj.slideFade();
+			if(obj.hoverChk) obj.slideFade();
 		});
 	};
 	//type:vertical
@@ -132,7 +141,7 @@ var Slide = (function(){
 				obj.now = 0;
 			}
 			obj.now++;
-			if(this.hoverChk) obj.slideVertical();
+			if(obj.hoverChk) obj.slideVertical();
 		});
 	};
 	//type:normal
@@ -147,8 +156,28 @@ var Slide = (function(){
 		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*100)+"%"}, this.option.speed, function(){
 			if(obj.now == obj.cnt - 1) obj.now = -1;
 			obj.now++;
-			if(this.hoverChk) obj.slideNormal();
+			if(obj.hoverChk) obj.slideNormal();
 		});
+	};
+	//PagerInit
+	Slide.prototype.pagerInit = function(slideTmp, pos, posValue) {
+		var style = 'position:absolute;width:100%;z-index:9999;'+pos+':'+posValue+';';
+		var html = '<div class="w3-center" style="'+style+'">';
+		html += '<div class="w3-bar w3-border w3-round pager"></div>';
+		html += '</div>';
+		var name, link, pagerHtml;
+		var pager = $(html).appendTo($(this.slides).parent());
+		for(var i=0; i<slideTmp.length; i++) {
+			name = $(slideTmp[i]).data("name");
+			link = $(slideTmp[i]).data("link");
+			pagerHtml = '<a href="'+link+'" class="w3-bar-item w3-button">'+name+'</a>';
+			pager.append(pagerHtml);
+		}
+	}
+	//Utils
+	Slide.prototype.nullChk = function(value){
+		if(value == undefined || value == null) return true;
+		else return false;
 	};
 	return Slide;
 }());
