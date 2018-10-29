@@ -5,6 +5,7 @@ var Slide = (function(){
 		this.slides = _wrap;
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
+		this.hoverChk = true;
 		//_option 존재여부에 따른 this.option 생성
 		if(_option) this.option = _option;
 		else {
@@ -18,9 +19,32 @@ var Slide = (function(){
 			obj.hei = $(obj.slide[0]).height();
 			obj.slides.height(obj.hei);
 		}).trigger("resize");
+		$(this.slides).hover(function(){
+			obj.hoverChk = false;
+		}, function(){
+			obj.hoverChk = true;
+			switch(obj.option.type) {
+				case "pingpong" :
+					obj.slidePingpong();
+					break;
+				case "infinite" :
+					obj.slideInfinite();
+					break;
+				case "fade" :
+					obj.slideFade();
+					break;
+				case "vertical" :
+					obj.slideVertical();
+					break;
+				default :
+					obj.slideNormal();
+					break;
+			}
+		});
 		switch(this.option.type) {
 			case "pingpong" :
 				this.now = 1;
+				this.direction = 1;
 				this.initPingpong();
 				break;
 			case "infinite" :
@@ -55,7 +79,7 @@ var Slide = (function(){
 				if(obj.now == obj.cnt - 1) obj.direction = -1;
 				else if(obj.now == 0) obj.direction = 1;
 				obj.now += obj.direction;
-				obj.slidePingpong();
+				if(this.hoverChk) obj.slidePingpong();
 		});
 	};
 	//type:infinite
@@ -76,7 +100,7 @@ var Slide = (function(){
 				obj.now = 0;
 			}
 			obj.now++;
-			obj.slideInfinite();
+			if(this.hoverChk) obj.slideInfinite();
 		});
 	};
 	//type:fade
@@ -89,7 +113,7 @@ var Slide = (function(){
 		this.slide.eq(this.now).css({"z-index":this.depth++, "display":"none"}).delay(this.option.delay).fadeIn(this.option.speed, function(){
 			if(obj.now == obj.cnt - 1) obj.now = -1;
 			obj.now++;
-			obj.slideFade();
+			if(this.hoverChk) obj.slideFade();
 		});
 	};
 	//type:vertical
@@ -108,7 +132,7 @@ var Slide = (function(){
 				obj.now = 0;
 			}
 			obj.now++;
-			obj.slideVertical();
+			if(this.hoverChk) obj.slideVertical();
 		});
 	};
 	//type:normal
@@ -123,7 +147,7 @@ var Slide = (function(){
 		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*100)+"%"}, this.option.speed, function(){
 			if(obj.now == obj.cnt - 1) obj.now = -1;
 			obj.now++;
-			obj.slideNormal();
+			if(this.hoverChk) obj.slideNormal();
 		});
 	};
 	return Slide;

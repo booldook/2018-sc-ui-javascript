@@ -1,4 +1,4 @@
 .wrap {width:100%;}
-.slide_wrap {width:100%; top:100px; max-width:1200px; position:relative; margin:0 auto; overflow:hidden;}
+.slide_wrap {width:100%; max-width:1200px; position:relative; margin:20px auto; overflow:hidden;}
 .slides {width:100%; position:relative;}
 .slide {width:100%; position:absolute;}
