@@ -3,7 +3,7 @@ $(window).resize(function(){
 }).trigger("resize");
 
 /***** Normal *****/
-var n1 = 0;
+var n1 = 1;
 (function slide1() {
 	$("#slides1").delay(2000).animate({"left":-(n1*100)+"%"}, 500, function(){
 		if(n1 == 5) n1 = -1;
@@ -13,7 +13,7 @@ var n1 = 0;
 })();
 
 /***** Infinite *****/
-var n2 = 0;
+var n2 = 1;
 (function slide2(){
 	$("#slides2").delay(2500).animate({"left":-(n2*100)+"%"}, 1000, function(){
 		if(n2 == 6) {
@@ -26,7 +26,7 @@ var n2 = 0;
 })();
 
 /***** Pingpong *****/
-var n3 = 0;
+var n3 = 1;
 var chk = 1;
 (function slide3() {
 	$("#slides3").delay(1500).animate({"left":-(n3*100)+"%"}, 700, function(){
@@ -49,9 +49,9 @@ var depth = 1;
 })();
 
 /***** Vertical Infinite *****/
-var n5 = 0;
+var n5 = 1;
 (function slide5(){
-	var hei = $(".slide").height();
+	var hei = $("#slides5 .slide").height();
 	$("#slides5").delay(2500).animate({"top":-(n5*hei)+"px"}, 1000, function(){
 		if(n5 == 6) {
 			n5 = 0;

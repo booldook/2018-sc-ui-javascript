@@ -5,11 +5,8 @@ var Slide = (function(){
 		this.slides = _wrap;
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
-		this.now = 0;
 		//_option 존재여부에 따른 this.option 생성
-		if(_option) {
-			this.option = _option;
-		}
+		if(_option) this.option = _option;
 		else {
 			this.option = {
 				type: "normal",
@@ -18,40 +15,43 @@ var Slide = (function(){
 			}
 		}
 		$(window).resize(function(){
-			obj.wid = $(obj.slide[0]).width();
 			obj.hei = $(obj.slide[0]).height();
 			obj.slides.height(obj.hei);
 		}).trigger("resize");
 		switch(this.option.type) {
 			case "pingpong" :
+				this.now = 1;
 				this.initPingpong();
 				break;
 			case "infinite" :
+				this.now = 1;
 				this.initInfinite();
 				break;
 			case "fade" :
+				this.now = 0;
 				this.initFade();
 				break;
 			case "vertical" :
+				this.now = 1;
 				this.initVertical();
 				break;
 			default :
+				this.now = 1;
 				this.initNormal();
 				break;
 		}
 	};
 	//type:pingpong
 	Slide.prototype.initPingpong = function() {
-		console.log(this.slide);
 		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"left":(this.wid*i)+"px"});
+			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
 		this.slidePingpong();
 	};
 	Slide.prototype.slidePingpong = function(){
 		var obj = this;
 		$(this.slides).delay(this.option.delay).animate({
-			"left":-(this.wid*this.now)+"px"}, this.option.speed, function(){
+			"left":-(100*this.now)+"%"}, this.option.speed, function(){
 				if(obj.now == obj.cnt - 1) obj.direction = -1;
 				else if(obj.now == 0) obj.direction = 1;
 				obj.now += obj.direction;
@@ -60,18 +60,17 @@ var Slide = (function(){
 	};
 	//type:infinite
 	Slide.prototype.initInfinite = function() {
-		console.log(this.slide);
 		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
 		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"left":(this.wid*i)+"px"});
+			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
 		this.slideInfinite();
 	};
 	Slide.prototype.slideInfinite = function(){
 		var obj = this;
-		this.slides.delay(this.option.delay).animate({"left":-(this.now*this.wid)+"px"}, this.option.speed, function(){
+		this.slides.delay(this.option.delay).animate({"left":-(this.now*100)+"%"}, this.option.speed, function(){
 			if(obj.now == obj.cnt - 1) {
 				obj.slides.css({"left":0});
 				obj.now = 0;
@@ -86,11 +85,10 @@ var Slide = (function(){
 		this.slideFade();
 	};
 	Slide.prototype.slideFade = function(){
-		console.log("fade");
 		var obj = this;
 		this.slide.eq(this.now).css({"z-index":this.depth++, "display":"none"}).delay(this.option.delay).fadeIn(this.option.speed, function(){
-			if(obj.now == obj.cnt - 1) obj.now = 0;
-			else obj.now++;
+			if(obj.now == obj.cnt - 1) obj.now = -1;
+			obj.now++;
 			obj.slideFade();
 		});
 	};
@@ -98,10 +96,8 @@ var Slide = (function(){
 	Slide.prototype.initVertical = function() {
 		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
 		this.slide = $(".slide", this.slides);
+		$(this.slide).css({"position":"static"});
 		this.cnt = this.slide.length;
-		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"top":(this.hei*i)+"px"});
-		}
 		this.slideVertical();
 	};
 	Slide.prototype.slideVertical = function(){
@@ -118,15 +114,15 @@ var Slide = (function(){
 	//type:normal
 	Slide.prototype.initNormal = function() {
 		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"left":(this.wid*i)+"px"});
+			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
 		this.slideNormal();
 	};
 	Slide.prototype.slideNormal = function(){
 		var obj = this;
-		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*this.wid)+"px"}, this.option.speed, function(){
-			if(obj.now == obj.cnt - 1) obj.now = 0;
-			else obj.now++;
+		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*100)+"%"}, this.option.speed, function(){
+			if(obj.now == obj.cnt - 1) obj.now = -1;
+			obj.now++;
 			obj.slideNormal();
 		});
 	};
