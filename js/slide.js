@@ -60,12 +60,10 @@ var Slide = (function(){
 		for(var i=0; i<obj.cnt; i++) {
 			$(obj.slide[i]).css({"left":(100*i)+"%"});
 		}
-		this.slidePingpong();
-	};
-	Slide.prototype.slidePingpong = function(){
-		var obj = this;
 		var interval = setInterval(ani, obj.option.delay, obj);
 		function ani(obj) {
+			$(obj.pager).find("span").removeClass("w3-red").addClass("w3-white");
+			$(obj.pager).find("span").eq(obj.now).removeClass("w3-white").addClass("w3-red");
 			$(obj.slides).stop().animate({"left":-(100*obj.now)+"%"}, obj.option.speed, function(){
 					if(obj.now == obj.cnt - 1) obj.direction = -1;
 					else if(obj.now == 0) obj.direction = 1;
@@ -73,6 +71,7 @@ var Slide = (function(){
 			});
 		}
 		this.hoverInit(interval, ani);
+		this.clickInit(interval, ani);
 	};
 	//type:infinite
 	Slide.prototype.initInfinite = function() {
@@ -150,19 +149,13 @@ var Slide = (function(){
 		var html = '<div class="w3-center" style="'+style+'">';
 		html += '<div class="w3-bar w3-border w3-round pager"></div>';
 		html += '</div>';
-		var name, link, pagerHtml;
-		var pager = $(html).appendTo($(this.slides).parent());
+		var name, pagerHtml;
+		this.pager = $(html).appendTo($(this.slides).parent());
 		for(var i=0; i<slideTmp.length; i++) {
 			name = $(slideTmp[i]).data("name");
-			link = $(slideTmp[i]).data("link");
 			pagerHtml = '<span class="w3-bar-item w3-button w3-white">'+name+'</span>';
-			pager.find(".pager").append(pagerHtml);
+			this.pager.find(".pager").append(pagerHtml);
 		}
-		pager.find(".pager").find("span").click(function(){
-			obj.now = $(this).index();
-			console.log(obj.slideFn);
-			//obj.slideFn();
-		});
 	}
 	//HoverInit
 	Slide.prototype.hoverInit = function(interval, fn) {
@@ -170,6 +163,16 @@ var Slide = (function(){
 		$(obj.slides).hover(function(){
 			clearInterval(interval);
 		}, function(){
+			interval = setInterval(fn, obj.option.delay, obj);
+		});
+	}
+	//ClickInit
+	Slide.prototype.clickInit = function(interval, fn) {
+		var obj = this;
+		$(obj.pager).find("span").click(function(){
+			obj.now = $(this).index();
+			clearInterval(interval);
+			fn(obj);
 			interval = setInterval(fn, obj.option.delay, obj);
 		});
 	}
