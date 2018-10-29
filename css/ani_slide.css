@@ -1,6 +1,7 @@
 .wrap {width:100%;}
 .slide_wrap {width:100%; max-width:1200px; position:relative; margin:20px auto; overflow:hidden;}
 .slides {width:100%; position:relative;}
+.pager_wrap {width:100%; position:absolute; bottom:20px; font-size:0.75em; z-index:9999;}
 
 #slides1 .slide {width:100%; position:absolute;}
 #slides1 .slide:nth-child(1) {left:0; top:0;}

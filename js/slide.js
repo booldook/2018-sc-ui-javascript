@@ -26,6 +26,7 @@ var Slide = (function(){
 				pager: false
 			}
 		}
+		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		$(window).resize(function(){
 			obj.hei = $(obj.slide[0]).height();
 			obj.slides.height(obj.hei);
@@ -58,29 +59,33 @@ var Slide = (function(){
 			case "pingpong" :
 				this.now = 1;
 				this.direction = 1;
+				this.slideFn = this.slidePingpong;
 				this.initPingpong();
 				break;
 			case "infinite" :
 				this.now = 1;
+				this.slideFn = this.slideInfinite;
 				this.initInfinite();
 				break;
 			case "fade" :
 				this.now = 0;
+				this.slideFn = this.slideFade;
 				this.initFade();
 				break;
 			case "vertical" :
 				this.now = 1;
+				this.slideFn = this.slideVertical;
 				this.initVertical();
 				break;
 			default :
 				this.now = 1;
+				this.slideFn = this.slideNormal;
 				this.initNormal();
 				break;
 		}
 	};
 	//type:pingpong
 	Slide.prototype.initPingpong = function() {
-		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		for(var i=0; i<this.cnt; i++) {
 			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
@@ -98,7 +103,7 @@ var Slide = (function(){
 	};
 	//type:infinite
 	Slide.prototype.initInfinite = function() {
-		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
+		console.log(this);
 		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
@@ -120,7 +125,6 @@ var Slide = (function(){
 	};
 	//type:fade
 	Slide.prototype.initFade = function(){
-		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		this.depth = 2;
 		this.slideFade();
 	};
@@ -134,7 +138,6 @@ var Slide = (function(){
 	};
 	//type:vertical
 	Slide.prototype.initVertical = function() {
-		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
 		this.slide = $(".slide", this.slides);
 		$(this.slide).css({"position":"static"});
@@ -154,7 +157,6 @@ var Slide = (function(){
 	};
 	//type:normal
 	Slide.prototype.initNormal = function() {
-		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		for(var i=0; i<this.cnt; i++) {
 			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
@@ -170,6 +172,7 @@ var Slide = (function(){
 	};
 	//PagerInit
 	Slide.prototype.pagerInit = function(slideTmp, pos, posValue) {
+		var obj = this;
 		var style = 'position:absolute;width:100%;z-index:9999;'+pos+':'+posValue+';';
 		var html = '<div class="w3-center" style="'+style+'">';
 		html += '<div class="w3-bar w3-border w3-round pager"></div>';
@@ -179,9 +182,14 @@ var Slide = (function(){
 		for(var i=0; i<slideTmp.length; i++) {
 			name = $(slideTmp[i]).data("name");
 			link = $(slideTmp[i]).data("link");
-			pagerHtml = '<a href="'+link+'" class="w3-bar-item w3-button w3-white">'+name+'</a>';
+			pagerHtml = '<span class="w3-bar-item w3-button w3-white">'+name+'</span>';
 			pager.find(".pager").append(pagerHtml);
 		}
+		pager.find(".pager").find("span").click(function(){
+			obj.now = $(this).index();
+			console.log(obj.slideFn);
+			//obj.slideFn();
+		});
 	}
 	//Utils
 	Slide.prototype.nullChk = function(value){

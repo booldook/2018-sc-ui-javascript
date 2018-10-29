@@ -2,15 +2,24 @@ $(window).resize(function(){
 	$(".slides").height($(".slide").height());
 }).trigger("resize");
 
-/***** Normal *****/
-var n1 = 1;
+/***** pagerInit *****/
 (function slide1() {
-	$("#slides1").delay(2000).animate({"left":-(n1*100)+"%"}, 500, function(){
-		if(n1 == 5) n1 = -1;
-		n1++;
-		slide1();
+	var n1 = 1;
+	$("#slides1").find(".slide").each(function(){
+		var name = $(this).data("name");
+		var html = '<span class="w3-bar-item w3-button w3-white" onclick="paging(this);">'+name+'</span>';
+		$(this).parent().next().find(".pager").append(html);
 	});
+	var interval = setInterval(aniSlide1, 3000);
+	function aniSlide1() {
+		$("#slides1").stop().animate({"left":-(n1*100)+"%"}, 500, function(){
+			if(n1 == 5) n1 = -1;
+			n1++;
+		});
+	}
 })();
+
+
 
 /***** Infinite *****/
 var n2 = 1;
