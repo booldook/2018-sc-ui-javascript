@@ -2,26 +2,39 @@ $(window).resize(function(){
 	$(".slides").height($(".slide").height());
 }).trigger("resize");
 
-/***** pagerInit *****/
-(function slide1() {
-	var n1 = 1;
-	$("#slides1").find(".slide").each(function(){
-		var name = $(this).data("name");
-		var html = '<span class="w3-bar-item w3-button w3-white" onclick="paging(this);">'+name+'</span>';
-		$(this).parent().next().find(".pager").append(html);
+/***** Normal *****/
+var n1 = 1;
+var interval1;
+$("#slides1").find(".slide").each(function(){
+	var name = $(this).data("name");
+	var html = '<span class="w3-bar-item w3-button w3-white" onclick="paging1(this);">'+name+'</span>';
+	$(this).parent().next().find(".pager").append(html);
+});
+interval1 = setInterval(slide1, 3000);
+function slide1() {
+	$("#slides1").stop().animate({"left":-(n1*100)+"%"}, 500, function(){
+		if(n1 == 5) n1 = -1;
+		n1++;
 	});
-	var interval = setInterval(aniSlide1, 3000);
-	function aniSlide1() {
-		$("#slides1").stop().animate({"left":-(n1*100)+"%"}, 500, function(){
-			if(n1 == 5) n1 = -1;
-			n1++;
-		});
-	}
-})();
+}
+function paging1(obj) {
+	n1 = $(obj).index();
+	clearInterval(interval1);
+	slide1();
+	interval1 = setInterval(slide1, 3000);
+}
+$("#slides1").hover(function(){
+	clearInterval(interval1);
+}, function(){
+	interval1 = setInterval(slide1, 3000);
+});
+
+
 
 
 
 /***** Infinite *****/
+/*
 var n2 = 1;
 (function slide2(){
 	$("#slides2").delay(2500).animate({"left":-(n2*100)+"%"}, 1000, function(){
@@ -33,8 +46,9 @@ var n2 = 1;
 		slide2();
 	});
 })();
-
+*/
 /***** Pingpong *****/
+/*
 var n3 = 1;
 var chk = 1;
 (function slide3() {
@@ -45,8 +59,9 @@ var chk = 1;
 		slide3();
 	});
 })();
-
+*/
 /***** FadeInOut *****/
+/*
 var n4 = 0;
 var depth = 1;
 (function slide4(){
@@ -56,8 +71,9 @@ var depth = 1;
 		slide4();
 	});
 })();
-
+*/
 /***** Vertical Infinite *****/
+/*
 var n5 = 1;
 (function slide5(){
 	var hei = $("#slides5 .slide").height();
@@ -70,3 +86,4 @@ var n5 = 1;
 		slide5();
 	});
 })();
+*/
