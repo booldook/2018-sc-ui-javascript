@@ -5,7 +5,6 @@ var Slide = (function(){
 		this.slides = _wrap;
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
-		this.hoverChk = true;
 		//_option 존재여부에 따른 this.option 생성
 		if(_option) {
 			this.option = _option;
@@ -31,75 +30,49 @@ var Slide = (function(){
 			obj.hei = $(obj.slide[0]).height();
 			obj.slides.height(obj.hei);
 		}).trigger("resize");
-		if(this.option.hover) {
-			$(this.slides).hover(function(){
-				obj.hoverChk = false;
-			}, function(){
-				obj.hoverChk = true;
-				switch(obj.option.type) {
-					case "pingpong" :
-						obj.slidePingpong();
-						break;
-					case "infinite" :
-						obj.slideInfinite();
-						break;
-					case "fade" :
-						obj.slideFade();
-						break;
-					case "vertical" :
-						obj.slideVertical();
-						break;
-					default :
-						obj.slideNormal();
-						break;
-				}
-			});
-		}
 		switch(this.option.type) {
 			case "pingpong" :
 				this.now = 1;
 				this.direction = 1;
-				this.slideFn = this.slidePingpong;
 				this.initPingpong();
 				break;
 			case "infinite" :
 				this.now = 1;
-				this.slideFn = this.slideInfinite;
 				this.initInfinite();
 				break;
 			case "fade" :
 				this.now = 0;
-				this.slideFn = this.slideFade;
 				this.initFade();
 				break;
 			case "vertical" :
 				this.now = 1;
-				this.slideFn = this.slideVertical;
 				this.initVertical();
 				break;
 			default :
 				this.now = 1;
-				this.slideFn = this.slideNormal;
 				this.initNormal();
 				break;
 		}
 	};
 	//type:pingpong
 	Slide.prototype.initPingpong = function() {
-		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"left":(100*i)+"%"});
+		var obj = this;
+		for(var i=0; i<obj.cnt; i++) {
+			$(obj.slide[i]).css({"left":(100*i)+"%"});
 		}
 		this.slidePingpong();
 	};
 	Slide.prototype.slidePingpong = function(){
 		var obj = this;
-		$(this.slides).delay(this.option.delay).animate({
-			"left":-(100*this.now)+"%"}, this.option.speed, function(){
-				if(obj.now == obj.cnt - 1) obj.direction = -1;
-				else if(obj.now == 0) obj.direction = 1;
-				obj.now += obj.direction;
-				if(obj.hoverChk) obj.slidePingpong();
-		});
+		var interval = setInterval(ani, obj.option.delay, obj);
+		function ani(obj) {
+			$(obj.slides).stop().animate({"left":-(100*obj.now)+"%"}, obj.option.speed, function(){
+					if(obj.now == obj.cnt - 1) obj.direction = -1;
+					else if(obj.now == 0) obj.direction = 1;
+					obj.now += obj.direction;
+			});
+		}
+		this.hoverInit(interval, ani);
 	};
 	//type:infinite
 	Slide.prototype.initInfinite = function() {
@@ -189,6 +162,15 @@ var Slide = (function(){
 			obj.now = $(this).index();
 			console.log(obj.slideFn);
 			//obj.slideFn();
+		});
+	}
+	//HoverInit
+	Slide.prototype.hoverInit = function(interval, fn) {
+		var obj = this;
+		$(obj.slides).hover(function(){
+			clearInterval(interval);
+		}, function(){
+			interval = setInterval(fn, obj.option.delay, obj);
 		});
 	}
 	//Utils

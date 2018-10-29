@@ -12,6 +12,8 @@ $("#slides1").find(".slide").each(function(){
 });
 interval1 = setInterval(slide1, 3000);
 function slide1() {
+	$("#slides1").parent().find(".pager").find("span").removeClass("w3-red").addClass("w3-white");
+	$("#slides1").parent().find(".pager").find("span").eq(n1).removeClass("w3-white").addClass("w3-red");
 	$("#slides1").stop().animate({"left":-(n1*100)+"%"}, 500, function(){
 		if(n1 == 5) n1 = -1;
 		n1++;
@@ -40,6 +42,8 @@ $("#slides2").find(".slide").each(function(){
 });
 interval2 = setInterval(slide2, 3000);
 function slide2() {
+	$("#slides2").parent().find(".pager").find("span").removeClass("w3-red").addClass("w3-white");
+	$("#slides2").parent().find(".pager").find("span").eq(n2).removeClass("w3-white").addClass("w3-red");
 	$("#slides2").stop().animate({"left":-(n2*100)+"%"}, 1000, function(){
 		if(n2 == 6) {
 			n2 = 0;
@@ -72,6 +76,8 @@ $("#slides3").find(".slide").each(function(){
 });
 interval3 = setInterval(slide3, 3000);
 function slide3() {
+	$("#slides3").parent().find(".pager").find("span").removeClass("w3-red").addClass("w3-white");
+	$("#slides3").parent().find(".pager").find("span").eq(n3).removeClass("w3-white").addClass("w3-red");
 	$("#slides3").stop().animate({"left":-(n3*100)+"%"}, 700, function(){
 		if(n3 == 0) chk = 1;
 		else if(n3 == 5) chk = -1;
@@ -101,6 +107,8 @@ $("#slides4").find(".slide").each(function(){
 });
 interval4 = setInterval(slide4, 3000);
 function slide4() {
+	$("#slides4").parent().find(".pager").find("span").removeClass("w3-red").addClass("w3-white");
+	$("#slides4").parent().find(".pager").find("span").eq(n4).removeClass("w3-white").addClass("w3-red");
 	$("#slides4 .slide").stop().eq(n4).css({"display":"none","z-index":depth++}).fadeIn(1000, function(){
 		if(n4 == 5) n4 = -1;
 		n4++;
@@ -130,6 +138,8 @@ $("#slides5").find(".slide").each(function(){
 interval5 = setInterval(slide5, 3000);
 function slide5() {
 	var hei = $("#slides5 .slide").height();
+	$("#slides5").parent().find(".pager").find("span").removeClass("w3-red").addClass("w3-white");
+	$("#slides5").parent().find(".pager").find("span").eq(n5).removeClass("w3-white").addClass("w3-red");
 	$("#slides5").stop().animate({"top":-(n5*hei)+"px"}, 1000, function(){
 		if(n5 == 6) {
 			n5 = 0;
