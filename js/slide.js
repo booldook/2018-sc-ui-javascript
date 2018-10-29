@@ -13,13 +13,17 @@ var Slide = (function(){
 			if(this.nullChk(this.option.delay)) this.option.delay = 2000;
 			if(this.nullChk(this.option.speed)) this.option.speed = 300;
 			if(this.nullChk(this.option.hover)) this.option.hover = true;
+			if(this.nullChk(this.option.pager)) this.option.pager = false;
+			if(this.nullChk(this.option.pagerPos)) this.option.pagerPos = "bottom";
+			if(this.nullChk(this.option.pagerVal)) this.option.pagerVal = "20px";
 		}
 		else {
 			this.option = {
 				type: "normal",
 				delay: 2000,
 				speed: 300,
-				hover: true
+				hover: true,
+				pager: false
 			}
 		}
 		$(window).resize(function(){
@@ -76,6 +80,7 @@ var Slide = (function(){
 	};
 	//type:pingpong
 	Slide.prototype.initPingpong = function() {
+		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		for(var i=0; i<this.cnt; i++) {
 			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
@@ -93,6 +98,7 @@ var Slide = (function(){
 	};
 	//type:infinite
 	Slide.prototype.initInfinite = function() {
+		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
 		this.slide = $(".slide", this.slides);
 		this.cnt = this.slide.length;
@@ -114,6 +120,7 @@ var Slide = (function(){
 	};
 	//type:fade
 	Slide.prototype.initFade = function(){
+		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		this.depth = 2;
 		this.slideFade();
 	};
@@ -127,6 +134,7 @@ var Slide = (function(){
 	};
 	//type:vertical
 	Slide.prototype.initVertical = function() {
+		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
 		this.slide = $(".slide", this.slides);
 		$(this.slide).css({"position":"static"});
@@ -146,6 +154,7 @@ var Slide = (function(){
 	};
 	//type:normal
 	Slide.prototype.initNormal = function() {
+		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
 		for(var i=0; i<this.cnt; i++) {
 			$(this.slide[i]).css({"left":(100*i)+"%"});
 		}
@@ -170,8 +179,8 @@ var Slide = (function(){
 		for(var i=0; i<slideTmp.length; i++) {
 			name = $(slideTmp[i]).data("name");
 			link = $(slideTmp[i]).data("link");
-			pagerHtml = '<a href="'+link+'" class="w3-bar-item w3-button">'+name+'</a>';
-			pager.append(pagerHtml);
+			pagerHtml = '<a href="'+link+'" class="w3-bar-item w3-button w3-white">'+name+'</a>';
+			pager.find(".pager").append(pagerHtml);
 		}
 	}
 	//Utils

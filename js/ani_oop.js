@@ -1,7 +1,10 @@
 //type normal/pingpong/infinite
 var banner = new Slide($("#slides1"), {
 	type: "normal",
-	hover: false
+	hover: false,
+	pager: true,
+	pagerPos: "top",
+	pagerVal: "10px"
 });
 
 var banner = new Slide($("#slides2"), {
@@ -11,7 +14,7 @@ var banner = new Slide($("#slides2"), {
 	hover: true,
 	pager: true,
 	pagerPos: "bottom",
-	pagerVal: "50px"
+	pagerVal: "10px"
 });
 
 var banner = new Slide($("#slides3"), {
