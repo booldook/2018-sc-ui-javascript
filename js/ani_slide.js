@@ -7,13 +7,13 @@ var n1 = 1;
 var interval1;
 $("#slides1").find(".slide").each(function(){
 	var name = $(this).data("name");
-	var html = '<span class="w3-bar-item w3-button w3-white" onclick="paging1(this);">'+name+'</span>';
+	var html = '<span class="w3-bar-item" onclick="paging1(this);">●</span>';
 	$(this).parent().next().find(".pager").append(html);
 });
 interval1 = setInterval(slide1, 3000);
 function slide1() {
-	$("#slides1").parent().find(".pager").find("span").removeClass("w3-red").addClass("w3-white");
-	$("#slides1").parent().find(".pager").find("span").eq(n1).removeClass("w3-white").addClass("w3-red");
+	$("#slides1").parent().find(".pager").find("span").removeClass("w3-text-red");
+	$("#slides1").parent().find(".pager").find("span").eq(n1).addClass("w3-text-red");
 	$("#slides1").stop().animate({"left":-(n1*100)+"%"}, 500, function(){
 		if(n1 == 5) n1 = -1;
 		n1++;
