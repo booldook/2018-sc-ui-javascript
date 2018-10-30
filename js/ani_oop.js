@@ -1,12 +1,15 @@
 //type normal/pingpong/infinite
 var banner = new Slide($("#slides1"), {
-	type: "pingpong",
+	type: "normal",
 	delay: 3000,
 	speed: 600,
 	hover: true,
 	pager: true,
 	pagerPos: "bottom",
-	pagerVal: "10px"
+	pagerVal: "0px",
+	pagerSymbol: "●",
+	pagerDefClass: "w3-text-white",
+	pagerActClass: "w3-text-red"
 });
 
 /*

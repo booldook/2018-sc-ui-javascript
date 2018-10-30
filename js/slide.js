@@ -15,6 +15,9 @@ var Slide = (function(){
 			if(this.nullChk(this.option.pager)) this.option.pager = false;
 			if(this.nullChk(this.option.pagerPos)) this.option.pagerPos = "bottom";
 			if(this.nullChk(this.option.pagerVal)) this.option.pagerVal = "20px";
+			if(this.nullChk(this.option.pagerSymbol)) this.option.pagerSymbol = null;
+			if(this.nullChk(this.option.pagerDefClass)) this.option.pagerDefClass = "w3-white";
+			if(this.nullChk(this.option.pagerActClass)) this.option.pagerActClass = "w3-red";
 		}
 		else {
 			this.option = {
@@ -25,7 +28,7 @@ var Slide = (function(){
 				pager: false
 			}
 		}
-		if(this.option.pager) this.pagerInit(this.slide, this.option.pagerPos, this.option.pagerVal);
+		if(this.option.pager) this.pagerInit(this);
 		$(window).resize(function(){
 			obj.hei = $(obj.slide[0]).height();
 			obj.slides.height(obj.hei);
@@ -34,146 +37,164 @@ var Slide = (function(){
 			case "pingpong" :
 				this.now = 1;
 				this.direction = 1;
-				this.initPingpong();
+				this.initPingpong(this);
 				break;
 			case "infinite" :
 				this.now = 1;
-				this.initInfinite();
+				this.initInfinite(this);
 				break;
 			case "fade" :
 				this.now = 0;
-				this.initFade();
+				this.initFade(this);
 				break;
 			case "vertical" :
 				this.now = 1;
-				this.initVertical();
+				this.initVertical(this);
 				break;
 			default :
 				this.now = 1;
-				this.initNormal();
+				this.initNormal(this);
 				break;
 		}
 	};
 	//type:pingpong
-	Slide.prototype.initPingpong = function() {
-		var obj = this;
+	Slide.prototype.initPingpong = function(obj) {
 		for(var i=0; i<obj.cnt; i++) {
 			$(obj.slide[i]).css({"left":(100*i)+"%"});
 		}
-		var interval = setInterval(ani, obj.option.delay, obj);
+		obj.interval = setInterval(ani, obj.option.delay, obj);
 		function ani(obj) {
-			$(obj.pager).find("span").removeClass("w3-red").addClass("w3-white");
-			$(obj.pager).find("span").eq(obj.now).removeClass("w3-white").addClass("w3-red");
+			if(obj.option.pager) {
+				$(obj.pager).find("span").removeClass(obj.option.pagerActClass).addClass(obj.option.pagerDefClass);
+				$(obj.pager).find("span").eq(obj.now).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
+			}
 			$(obj.slides).stop().animate({"left":-(100*obj.now)+"%"}, obj.option.speed, function(){
 					if(obj.now == obj.cnt - 1) obj.direction = -1;
 					else if(obj.now == 0) obj.direction = 1;
 					obj.now += obj.direction;
 			});
 		}
-		this.hoverInit(interval, ani);
-		this.clickInit(interval, ani);
+		if(obj.option.hover) obj.hoverInit(obj, ani);
+		if(obj.option.pager) obj.clickInit(obj, ani);
 	};
 	//type:infinite
-	Slide.prototype.initInfinite = function() {
-		console.log(this);
-		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
-		this.slide = $(".slide", this.slides);
-		this.cnt = this.slide.length;
-		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"left":(100*i)+"%"});
+	Slide.prototype.initInfinite = function(obj) {
+		obj.slides.find(".slide").eq(0).clone().appendTo(obj.slides);
+		obj.slide = $(obj.slides).find(".slide");
+		obj.cnt = obj.slide.length;
+		for(var i=0; i<obj.cnt; i++) {
+			$(obj.slide[i]).css({"left":(100*i)+"%"});
 		}
-		this.slideInfinite();
-	};
-	Slide.prototype.slideInfinite = function(){
-		var obj = this;
-		this.slides.delay(this.option.delay).animate({"left":-(this.now*100)+"%"}, this.option.speed, function(){
-			if(obj.now == obj.cnt - 1) {
-				obj.slides.css({"left":0});
-				obj.now = 0;
+		obj.interval = setInterval(ani, obj.option.delay, obj);
+		function ani(obj) {
+			if(obj.option.pager) {
+				$(obj.pager).find("span").removeClass(obj.option.pagerActClass).addClass(obj.option.pagerDefClass);
+				if(obj.now == obj.cnt - 1) $(obj.pager).find("span").eq(0).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
+				else $(obj.pager).find("span").eq(obj.now).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
 			}
-			obj.now++;
-			if(obj.hoverChk) obj.slideInfinite();
-		});
+			$(obj.slides).stop().animate({"left":-(obj.now*100)+"%"}, obj.option.speed, function(){
+				if(obj.now == obj.cnt - 1) {
+					obj.slides.css({"left":0});
+					obj.now = 0;
+				}
+				obj.now++;
+			});
+		}
+		if(obj.option.hover) obj.hoverInit(obj, ani);
+		if(obj.option.pager) obj.clickInit(obj, ani);
 	};
 	//type:fade
-	Slide.prototype.initFade = function(){
-		this.depth = 2;
-		this.slideFade();
-	};
-	Slide.prototype.slideFade = function(){
-		var obj = this;
-		this.slide.eq(this.now).css({"z-index":this.depth++, "display":"none"}).delay(this.option.delay).fadeIn(this.option.speed, function(){
-			if(obj.now == obj.cnt - 1) obj.now = -1;
-			obj.now++;
-			if(obj.hoverChk) obj.slideFade();
-		});
+	Slide.prototype.initFade = function(obj){
+		obj.depth = 2;
+		obj.interval = setInterval(ani, obj.option.delay, obj);
+		function ani(obj) {
+			if(obj.option.pager) {
+				$(obj.pager).find("span").removeClass(obj.option.pagerActClass).addClass(obj.option.pagerDefClass);
+				$(obj.pager).find("span").eq(obj.now).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
+			}
+			$(obj.slide).eq(obj.now).stop().css({"z-index":obj.depth++, "display":"none"}).fadeIn(obj.option.speed, function(){
+				if(obj.now == obj.cnt - 1) obj.now = -1;
+				obj.now++;
+			});
+		}
+		if(obj.option.hover) obj.hoverInit(obj, ani);
+		if(obj.option.pager) obj.clickInit(obj, ani);
 	};
 	//type:vertical
-	Slide.prototype.initVertical = function() {
-		this.slides.find(".slide").eq(0).clone().appendTo(this.slides);
-		this.slide = $(".slide", this.slides);
-		$(this.slide).css({"position":"static"});
-		this.cnt = this.slide.length;
-		this.slideVertical();
-	};
-	Slide.prototype.slideVertical = function(){
-		var obj = this;
-		this.slides.delay(this.option.delay).animate({"top":-(this.now*this.hei)+"px"}, this.option.speed, function(){
-			if(obj.now == obj.cnt - 1) {
-				obj.slides.css({"top":0});
-				obj.now = 0;
+	Slide.prototype.initVertical = function(obj) {
+		obj.slides.find(".slide").eq(0).clone().appendTo(obj.slides);
+		obj.slide = $(obj.slides).find(".slide");
+		obj.cnt = obj.slide.length;
+		$(obj.slide).css({"position":"static"});
+		obj.interval = setInterval(ani, obj.option.delay, obj);
+		function ani(obj) {
+			if(obj.option.pager) {
+				$(obj.pager).find("span").removeClass(obj.option.pagerActClass).addClass(obj.option.pagerDefClass);
+				if(obj.now == obj.cnt - 1) $(obj.pager).find("span").eq(0).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
+				else $(obj.pager).find("span").eq(obj.now).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
 			}
-			obj.now++;
-			if(obj.hoverChk) obj.slideVertical();
-		});
+			$(obj.slides).stop().animate({"top":-(obj.now*obj.hei)+"px"}, obj.option.speed, function(){
+				if(obj.now == obj.cnt - 1) {
+					obj.slides.css({"top":0});
+					obj.now = 0;
+				}
+				obj.now++;
+			});
+		}
+		if(obj.option.hover) obj.hoverInit(obj, ani);
+		if(obj.option.pager) obj.clickInit(obj, ani);
 	};
 	//type:normal
-	Slide.prototype.initNormal = function() {
-		for(var i=0; i<this.cnt; i++) {
-			$(this.slide[i]).css({"left":(100*i)+"%"});
+	Slide.prototype.initNormal = function(obj) {
+		for(var i=0; i<obj.cnt; i++) {
+			$(obj.slide[i]).css({"left":(100*i)+"%"});
 		}
-		this.slideNormal();
-	};
-	Slide.prototype.slideNormal = function(){
-		var obj = this;
-		$(this.slides).delay(this.option.delay).animate({"left":-(this.now*100)+"%"}, this.option.speed, function(){
-			if(obj.now == obj.cnt - 1) obj.now = -1;
-			obj.now++;
-			if(obj.hoverChk) obj.slideNormal();
-		});
+		obj.interval = setInterval(ani, obj.option.delay, obj);
+		function ani(obj) {
+			if(obj.option.pager) {
+				$(obj.pager).find("span").removeClass(obj.option.pagerActClass).addClass(obj.option.pagerDefClass);
+				$(obj.pager).find("span").eq(obj.now).removeClass(obj.option.pagerDefClass).addClass(obj.option.pagerActClass);
+			}
+			$(obj.slides).stop().animate({"left":-(obj.now*100)+"%"}, obj.option.speed, function(){
+				if(obj.now == obj.cnt - 1) obj.now = -1;
+				obj.now++;
+			});
+		}
+		if(obj.option.hover) obj.hoverInit(obj, ani);
+		if(obj.option.pager) obj.clickInit(obj, ani);
 	};
 	//PagerInit
-	Slide.prototype.pagerInit = function(slideTmp, pos, posValue) {
-		var obj = this;
-		var style = 'position:absolute;width:100%;z-index:9999;'+pos+':'+posValue+';';
+	Slide.prototype.pagerInit = function(obj) {
+		var style = 'position:absolute;width:100%;z-index:9999;'+obj.option.pagerPos+':'+obj.option.pagerVal+';';
 		var html = '<div class="w3-center" style="'+style+'">';
-		html += '<div class="w3-bar w3-border w3-round pager"></div>';
+		if(obj.nullChk(obj.option.pagerSymbol)) html += '<div class="w3-bar w3-border pager"></div>';
+		else html += '<div class="w3-bar pager"></div>';
 		html += '</div>';
 		var name, pagerHtml;
-		this.pager = $(html).appendTo($(this.slides).parent());
-		for(var i=0; i<slideTmp.length; i++) {
-			name = $(slideTmp[i]).data("name");
-			pagerHtml = '<span class="w3-bar-item w3-button w3-white">'+name+'</span>';
-			this.pager.find(".pager").append(pagerHtml);
+		obj.pager = $(html).appendTo($(obj.slides).parent());
+		for(var i=0; i<obj.cnt; i++) {
+			name = $(obj.slide[i]).data("name");
+			if(obj.nullChk(obj.option.pagerSymbol)) pagerHtml = '<span class="w3-bar-item w3-button w3-white">'+name+'</span>';
+			else pagerHtml = '<span class="w3-bar-item" style="cursor:pointer;">'+obj.option.pagerSymbol+'</span>'; 
+			obj.pager.find(".pager").append(pagerHtml);
 		}
 	}
 	//HoverInit
-	Slide.prototype.hoverInit = function(interval, fn) {
-		var obj = this;
+	Slide.prototype.hoverInit = function(obj, fn) {
 		$(obj.slides).hover(function(){
-			clearInterval(interval);
+			clearInterval(obj.interval);
 		}, function(){
-			interval = setInterval(fn, obj.option.delay, obj);
+			clearInterval(obj.interval);
+			obj.interval = setInterval(fn, obj.option.delay, obj);
 		});
 	}
 	//ClickInit
-	Slide.prototype.clickInit = function(interval, fn) {
-		var obj = this;
+	Slide.prototype.clickInit = function(obj, fn) {
 		$(obj.pager).find("span").click(function(){
 			obj.now = $(this).index();
-			clearInterval(interval);
+			clearInterval(obj.interval);
 			fn(obj);
-			interval = setInterval(fn, obj.option.delay, obj);
+			obj.interval = setInterval(fn, obj.option.delay, obj);
 		});
 	}
 	//Utils
@@ -185,17 +206,3 @@ var Slide = (function(){
 }());
 
 
-/***** 참고사항 *****/
-/*
-switch(값) {
-	case "infinite" :
-		//실행문
-		break;
-	case "pingpong" :
-		//실행문
-		break;
-	default :
-		//실행문
-		break;
-}
-*/
