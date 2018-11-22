@@ -10,11 +10,14 @@ var WheelScroll = (function(){
 		else {
 			this.page = $(".page");
 			this.speed = 200;
+			this.nav = null;
 		}
 		this.scTop = $(window).scrollTop();
 		this.gap = [];
+		this.oldNow = 0;
 		this.now = 0;
 		this.dir = 0;
+		this.speedGap = 0;
 		$(window).resize(function(){
 			$(obj.page).each(function (i) {
 				obj.gap[i] = $(this).offset().top;
@@ -37,6 +40,7 @@ var WheelScroll = (function(){
 					break;
 				}
 			}
+			obj.oldNow = obj.now;
 			if (obj.dir > 0) { if (obj.now > 0) obj.now--; } 
 			else { if (obj.now < obj.gap.length - 1) obj.now++; }
 			obj.animation(obj, function(){
@@ -46,14 +50,14 @@ var WheelScroll = (function(){
 	}
 	WheelScroll.prototype.navAdd = function(obj, navObj) {
 		$(navObj).on("click", function(){
-			var oldNow = now;
-			now = $(this).data("now");
-			var speedGap = Math.abs(now - oldNow);
-			$("html, body").stop().animate({"scrollTop": gap[now] + "px"}, 100*speedGap);
+			obj.oldNow = obj.now;
+			obj.now = $(this).data("now");
+			obj.animation(obj, null);
 		});
 	}
 	WheelScroll.prototype.animation = function(obj, fn) {
-		$("html, body").stop().animate({"scrollTop": obj.gap[obj.now] + "px"}, obj.speed, fn);
+		obj.speedGap = Math.abs(obj.now - obj.oldNow);
+		$("html, body").stop().animate({"scrollTop":obj.gap[obj.now]+"px"}, obj.speed*obj.speedGap, fn);
 	}
 	return WheelScroll;
 }());
