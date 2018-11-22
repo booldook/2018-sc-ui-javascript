@@ -1,0 +1,8 @@
+.wrap {width:100%;}
+#box {margin:100px 0 0 100px; width:200px; height:200px; border:10px solid #f00; background-color: goldenrod;}
+.ani1 {animation-name:ani1; animation-direction:normal; animation-duration:2s; animation-fill-mode:forwards;animation-timing-function:ease-in-out; opacity:1;}
+
+@keyframes ani1 {
+	0% {transform:translateX(-500px); opacity:0;}
+	100% {transform:translateX(0px); opacity:1;}
+}
