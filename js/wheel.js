@@ -1,4 +1,26 @@
-var pages = new WheelScroll(".page");
+var pages = new WheelScroll({
+	page: ".page",
+	nav: ".nav", 
+	speed: 300
+});
+//var pages = new WheelScroll();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 var scTop = $(window).scrollTop();
@@ -28,10 +50,10 @@ function wheelFn(e) {
 		$(window).on("mousewheel DOMMouseScroll", wheelFn);
 	});
 }
-*/
 $(".nav").on("click", function(){
 	var oldNow = now;
 	now = $(this).data("now");
 	var speedGap = Math.abs(now - oldNow);
 	$("html, body").stop().animate({"scrollTop": gap[now] + "px"}, 100*speedGap);
 });
+*/
