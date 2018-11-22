@@ -1,3 +1,6 @@
+var pages = new WheelScroll(".page");
+
+/*
 var scTop = $(window).scrollTop();
 var gap = [];
 var now = 0;
@@ -25,6 +28,7 @@ function wheelFn(e) {
 		$(window).on("mousewheel DOMMouseScroll", wheelFn);
 	});
 }
+*/
 $(".nav").on("click", function(){
 	var oldNow = now;
 	now = $(this).data("now");
