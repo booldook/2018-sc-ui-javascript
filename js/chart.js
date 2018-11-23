@@ -1,13 +1,11 @@
 var data = [{
 	datasets: [{
-			data: [70, 30],
+			data: [70],
 			backgroundColor: [
-				'rgba(255, 99, 132, 0.5)',
-				'rgba(255, 255, 255, 0)'
+				'rgba(255, 99, 132, 0.5)'
 			],
 			hoverBackgroundColor:[
-				'rgba(255, 0, 0, 1)',
-				'rgba(255, 255, 255, 0)'
+				'rgba(255, 0, 0, 1)'
 			]
 	}]
 },{
@@ -47,7 +45,13 @@ var option = [{
 	tooltips : {
 		enabled: false
 	},
-	cutoutPercentage: 30
+	cutoutPercentage: 30,
+	rotation: -0.5 * Math.PI,
+	circumference: 1.4 * Math.PI,
+	animation: {
+		animateRotate: true,
+		animateScale: true
+	}
 },{
 	legend: {
 		display: false
