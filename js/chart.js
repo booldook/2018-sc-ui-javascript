@@ -4,6 +4,10 @@ var data = [{
 			backgroundColor: [
 				'rgba(255, 99, 132, 0.5)',
 				'rgba(255, 255, 255, 0)'
+			],
+			hoverBackgroundColor:[
+				'rgba(255, 0, 0, 1)',
+				'rgba(255, 255, 255, 0)'
 			]
 	}]
 },{
@@ -39,7 +43,23 @@ var data = [{
 			borderWidth: 1
 	}]
 }];
-var option = [{},{},{}];
+var option = [{
+	tooltips : {
+		enabled: false
+	},
+	cutoutPercentage: 30
+},{
+	legend: {
+		display: false
+	}
+},{
+	title: {
+		display: true,
+		text: 'Custom Chart Title',
+		fontSize: 24,
+		fontColor: "#f00"
+	}
+}];
 var chart = [];
 
 var ctx = $(".chart");
@@ -47,7 +67,7 @@ ctx.each(function(i){
 	chart[i] = new Chart($(this), {
 		type: 'doughnut',
 		data: data[i],
-		option: option[i]
+		options: option[i]
 	});
 });
 
